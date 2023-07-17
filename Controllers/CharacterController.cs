@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Player,Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase
@@ -16,12 +16,12 @@ namespace WebAPI.Controllers
             _characterService = characterService;
         }
 
-        [AllowAnonymous]
+    
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDTO>>>> Get()
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
-            return Ok(await _characterService.GetAllCharacters(userId));
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
@@ -54,6 +54,12 @@ namespace WebAPI.Controllers
                 return NotFound(response);
 
             return Ok();
+        }
+
+        [HttpPost("Skill")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> AddCharacterSkill(AddCharacterSkillDTO newCharacterSkill)
+        {
+            return Ok(await _characterService.AddCharacterSkill(newCharacterSkill));
         }
     }
 }

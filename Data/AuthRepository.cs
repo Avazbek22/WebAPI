@@ -54,7 +54,7 @@ namespace WebAPI.Data
 
         public async Task<bool> UserExist(string userName)
         {
-            return await _context.Users.AnyAsync(u => userName.ToLower() == userName.ToLower());
+            return await _context.Users.AnyAsync(u => u.UserName.ToLower() == userName.ToLower());
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -80,7 +80,8 @@ namespace WebAPI.Data
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role)
             };
             var appSettingsToken = _configuration.GetSection("AppSettings:Token").Value;
             if(appSettingsToken is null)

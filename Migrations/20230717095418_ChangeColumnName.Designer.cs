@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data;
 
@@ -11,9 +12,11 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230717095418_ChangeColumnName")]
+    partial class ChangeColumnName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +94,7 @@ namespace WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Damage")
+                    b.Property<int>("Demage")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -106,19 +109,19 @@ namespace WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Damage = 30,
+                            Demage = 30,
                             Name = "Fireball"
                         },
                         new
                         {
                             Id = 2,
-                            Damage = 20,
+                            Demage = 20,
                             Name = "Frenzy"
                         },
                         new
                         {
                             Id = 3,
-                            Damage = 50,
+                            Demage = 50,
                             Name = "Blizzard"
                         });
                 });
@@ -138,12 +141,6 @@ namespace WebAPI.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("Player");
 
                     b.Property<string>("UserName")
                         .IsRequired()
